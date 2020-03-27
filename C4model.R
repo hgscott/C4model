@@ -8,7 +8,7 @@
 ## vpdo: vapor pressure deficit at sea level (kPa)
 ## cao: atmospheric CO2 at sea level (Pa)
 ## paro: photosynthetically active radiation at sea level (µmol m-2 s-1)
-## q0: quantum efficiency of photosynthetic electron transport (mol/mol)
+## q025: quantum efficiency of photosynthetic electron transport (mol/mol)
 ## theta: curvature of the light response of electron transport (unitless)
 ## R: universal gas constant (J mol-1 K-1)
 #
@@ -18,7 +18,7 @@
 ## ca: atmospheric CO2 at z (Pa)
 ## z: elevation (m)
 ## vpd: vapor pressure deficit at z (kPa)
-## q0: : phi value (unit?)
+## q0: quantum efficiency of photosynthetic electron transport at tg_c (mol/mol)
 ## kp: michaelis menten coefficient for PEPc (Pa)
 ## kr: Michaelis-Menten constant for Rubisco carboxylation (Pa)
 ## chi: leaf intercellular to atmospheric CO2 ratio (ci/ca) (unitless)
