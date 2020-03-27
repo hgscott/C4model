@@ -54,7 +54,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400,
   # Light Limited Photosynthesis
     
   # Jmax stuff
-  omega <- calc_/mega(theta = theta, c = 0.079, m = 1) # Eq. S4
+  omega <- calc_omega(theta = theta, c = 0.079, m = 1) # Eq. S4
   omega_star <- (1 + (omega) - sqrt((1 + (omega))^2 - (4 * theta * omega)))  # Eq. 18
   
   q0 = q025 * phi_ftemp(tg_c)
