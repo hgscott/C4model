@@ -45,7 +45,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400,
   gamma_star <- calc_gammastar_pa(tg_c, z) # pa
   
   # calc chi
-  chi <- calc_chi_xi_resp(ca, tg_c, vpd, z, gamma_star)[1]
+  chi <- calc_chi_xi_resp(ca, tg_c, vpd, z, gamma_star)
   
   # calc ci ( = cm)
   ci <- chi * ca # Eqn. 2.36
