@@ -24,10 +24,10 @@ calc_chi_xi_resp <- function(ca, temp, vpd, z, Gamma_star){
   eta_star <- eta_star[[1]]
   
   xi <- sqrt((beta * (Kr + Kp + Gamma_star))/(1.6 * eta_star))
-  # chi <- (xi / (xi + sqrt(vpd_pa)))
+  chi <- (xi / (xi + sqrt(vpd_pa)))
   ci <- ((xi * ca_pa) + (Gamma_star * sqrt(vpd_pa)))/(xi * sqrt(vpd_pa))
   # res <- c(chi, ci)
-  res <- ci
+  res <- c(chi, ci)
   
   return(res)
 }
