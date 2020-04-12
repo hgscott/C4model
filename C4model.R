@@ -39,15 +39,16 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400,
   patm <- calc_patm(z)
   par <- calc_par(paro, z)
   vpd <- calc_vpd(tg_c, z, vpdo)
-  ca <- cao * 1e-6 * patm
+  ca <- cao * 1e-6 * patm # Unnnecessary, already in calc_chi_xi_resp eqn
   
   # Calculate Gamma star
   gamma_star <- calc_gammastar_pa(tg_c, z) # pa
   
   # calc chi
-  chi <- calc_chi_xi_resp(ca, tg_c, vpd, z, gamma_star)[1]
+  chi <- calc_chi_xi_resp(cao, tg_c, vpd, z, gamma_star)
   # calc ci ( = cm)
-  ci <- calc_chi_xi_resp(ca, tg_c, vpd, z, gamma_star)[2]
+  # ci <- calc_chi_xi_resp(cao, tg_c, vpd, z, gamma_star)
+  ci <- ca * chi
   cm <- ci
     
   # Light Limited Photosynthesis
@@ -74,7 +75,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400,
   # calc cbs
   cbs <- calc_cbs(z, Al, vpmax, cm) # Eqn. 2.41
   # calc obs
-  chi_2 <- cbs/cm
+  chi_2 <- cbs/cm # Totally wrong
   om <- 2.09476e5
   om_pa <- om * (1e-6) * patm
   obs <- om * chi_2
