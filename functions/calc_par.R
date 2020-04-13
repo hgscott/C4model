@@ -2,11 +2,10 @@
 
 calc_par = function(paro, z){ # paro in µmol m-2 s-1 and z in m
 	
-	z_km = z/1000 
+	z_km <- z/1000 
 	
-	par = paro * (1 + 0.027*z_km)
+	par <- paro * (1 + 0.027*z_km)
 	
-	par
-
+	return(par)
 }
 

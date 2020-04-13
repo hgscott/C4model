@@ -9,7 +9,7 @@ calc_chi_xi_resp <- function(ca, temp, vpd, z, Gamma_star){
   
   R <- 8.3145 # Pa
   tempK <- temp + 273.15
-  vpd_pa <- vpd * 1000 # is this right??? Ci would be higher if I didnt do this
+  vpd_pa <- vpd * 1000
   beta <- 53.4817
   
   Kr_25 <- 94.7 # Pa
@@ -25,7 +25,7 @@ calc_chi_xi_resp <- function(ca, temp, vpd, z, Gamma_star){
   
   xi <- sqrt((beta * (Kr + Kp + Gamma_star))/(1.6 * eta_star))
   chi <- (xi / (xi + sqrt(vpd_pa)))
-  ci <- ((xi * ca_pa) + (Gamma_star * sqrt(vpd_pa)))/(xi * sqrt(vpd_pa)) # Wrong, somehow
+  ci <- ((xi * ca_pa) + (Gamma_star * sqrt(vpd_pa)))/(xi * sqrt(vpd_pa))
   # res <- c(chi, ci)
   res <- chi
   

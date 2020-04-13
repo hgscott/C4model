@@ -6,7 +6,8 @@
 ## tg_c: acclimated temperature (degC)
 ## z: elevation (m)
 ## vpdo: vapor pressure deficit at sea level (kPa)
-## cao: atmospheric CO2 at sea level (Pa)
+## cao: atmospheric CO2 at sea level (ppm)
+## oao: atmospheric O2 at sea level (ppm)
 ## paro: photosynthetically active radiation at sea level (µmol m-2 s-1)
 ## q025: quantum efficiency of photosynthetic electron transport (mol/mol)
 ## theta: curvature of the light response of electron transport (unitless)
@@ -32,7 +33,7 @@
 ## Ap: PEPc-limited photosynthesis (µmol m-2 s-1)
 ## Ac: Rubisco-limited photosynthesis (µmol m-2 s-1)
 
-C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, 
+C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460, 
                   paro = 800, q025 = 0.25, theta = 0.85, R = 8.314){
   
   # environmental terms
@@ -40,6 +41,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400,
   par <- calc_par(paro, z)
   vpd <- calc_vpd(tg_c, z, vpdo)
   ca <- cao * 1e-6 * patm # Unnnecessary, already in calc_chi_xi_resp eqn
+  oa <- oao * 1e-6 * patm
   
   # Calculate Gamma star
   gamma_star <- calc_gammastar_pa(tg_c, z) # pa
@@ -47,7 +49,6 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400,
   # calc chi
   chi <- calc_chi_xi_resp(cao, tg_c, vpd, z, gamma_star)
   # calc ci ( = cm)
-  # ci <- calc_chi_xi_resp(cao, tg_c, vpd, z, gamma_star)
   ci <- ca * chi
   cm <- ci
     
@@ -75,10 +76,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400,
   # calc cbs
   cbs <- calc_cbs(z, Al, vpmax, cm) # Eqn. 2.41
   # calc obs
-  chi_2 <- cbs/cm # Totally wrong
-  om <- 2.09476e5
-  om_pa <- om * (1e-6) * patm
-  obs <- om * chi_2
+  obs <- oao
   
   # calc vcmax
   vcmax <- Ap * ((cbs + kr * (1 + obs/ko)) / cbs) # Eqn. 2.47
@@ -87,6 +85,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400,
   results <- data.frame("tg_c" = tg_c,
                         "par" = par,
                         "ca" = ca,
+                        "oa" = oa,
                         "z" = z,
                         "vpd" = vpd,
                         "q0" = q0,
