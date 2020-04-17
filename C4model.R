@@ -29,6 +29,7 @@
 ## jmax: optimal maximum rate of electron transport at tg (µmol m-2 s-1)
 ## vpmax: maximum rate of PEPc (µmol m-2 s-1)
 ## vcmax: maximum rate of Rubisco carboxylation (µmol m-2 s-1)
+## jv ratio: ratio of jmax to vcmax (unitless)
 ## Al: light-limited photosynthesis (µmol m-2 s-1)
 ## Ap: PEPc-limited photosynthesis (µmol m-2 s-1)
 ## Ac: Rubisco-limited photosynthesis (µmol m-2 s-1)
@@ -40,7 +41,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   patm <- calc_patm(z)
   par <- calc_par(paro, z)
   vpd <- calc_vpd(tg_c, z, vpdo)
-  ca <- cao * 1e-6 * patm # Unnnecessary, already in calc_chi_xi_resp eqn
+  ca <- cao * 1e-6 * patm
   oa <- oao * 1e-6 * patm
   
   # Calculate Gamma star
@@ -51,10 +52,11 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   # calc ci ( = cm)
   ci <- ca * chi
   cm <- ci
+  oi <- oa * chi
     
   # Light Limited Photosynthesis
     
-  # Jmax stuff
+  # Jmax
   omega <- calc_omega(theta = theta, c = 0.079, m = 1) # Eq. S4
   omega_star <- (1 + (omega) - sqrt((1 + (omega))^2 - (4 * theta * omega)))  # Eq. 18
   
@@ -76,7 +78,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   # calc cbs
   cbs <- calc_cbs(z, Al, vpmax, cm) # Eqn. 2.41
   # calc obs
-  obs <- oao
+  obs <- oi
   
   # calc vcmax
   vcmax <- Ap * ((cbs + kr * (1 + obs/ko)) / cbs) # Eqn. 2.47
@@ -98,6 +100,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
                         "jmax" = jmax,
                         "vpmax" = vpmax,
                         "vcmax" = vcmax,
+                        "jv ratio" = jmax/vcmax,
                         "Al" = Al,
                         "Ap" = Ap,
                         "Ac" = Ac)
