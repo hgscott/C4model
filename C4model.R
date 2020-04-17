@@ -8,14 +8,14 @@
 ## vpdo: vapor pressure deficit at sea level (kPa)
 ## cao: atmospheric CO2 at sea level (ppm)
 ## oao: atmospheric O2 at sea level (ppm)
-## paro: photosynthetically active radiation at sea level (µmol m-2 s-1)
+## paro: photosynthetically active radiation at sea level (?mol m-2 s-1)
 ## q025: quantum efficiency of photosynthetic electron transport (mol/mol)
 ## theta: curvature of the light response of electron transport (unitless)
 ## R: universal gas constant (J mol-1 K-1)
 #
 # Returns
 ## tg_c: acclimated temperature (degC)
-## par: photosynthetically active radiation at z (µmol m-2 s-1)
+## par: photosynthetically active radiation at z (?mol m-2 s-1)
 ## ca: atmospheric CO2 at z (Pa)
 ## z: elevation (m)
 ## vpd: vapor pressure deficit at z (kPa)
@@ -26,13 +26,13 @@
 ## ci: leaf intercellular CO2 concentation (Pa)
 ## cbs: bundle sheath CO2 pressure (Pa)
 ## obs: bundle sheath O2 pressure (Pa)
-## jmax: optimal maximum rate of electron transport at tg (µmol m-2 s-1)
-## vpmax: maximum rate of PEPc (µmol m-2 s-1)
-## vcmax: maximum rate of Rubisco carboxylation (µmol m-2 s-1)
+## jmax: optimal maximum rate of electron transport at tg (?mol m-2 s-1)
+## vpmax: maximum rate of PEPc (?mol m-2 s-1)
+## vcmax: maximum rate of Rubisco carboxylation (?mol m-2 s-1)
 ## jv ratio: ratio of jmax to vcmax (unitless)
-## Al: light-limited photosynthesis (µmol m-2 s-1)
-## Ap: PEPc-limited photosynthesis (µmol m-2 s-1)
-## Ac: Rubisco-limited photosynthesis (µmol m-2 s-1)
+## Al: light-limited photosynthesis (?mol m-2 s-1)
+## Ap: PEPc-limited photosynthesis (?mol m-2 s-1)
+## Ac: Rubisco-limited photosynthesis (?mol m-2 s-1)
 
 C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460, 
                   paro = 800, q025 = 0.25, theta = 0.85, R = 8.314){
@@ -57,7 +57,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   # Light Limited Photosynthesis
     
   # Jmax
-  omega <- calc_omega(theta = theta, c = 0.079, m = 1) # Eq. S4
+  omega <- calc_omega(theta = theta, c = 0.01, m = 1) # Eq. S4
   omega_star <- (1 + (omega) - sqrt((1 + (omega))^2 - (4 * theta * omega)))  # Eq. 18
   
   q0 = q025 * phi_ftemp(tg_c)
@@ -81,7 +81,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   obs <- oi
   
   # calc vcmax
-  vcmax <- Ap * ((cbs + kr * (1 + obs/ko)) / cbs) # Eqn. 2.47
+  vcmax <- (q0 * par * omega_star / (8 * theta)) * ((cbs + kr * (1 + obs/ko)) / (cbs - gamma_star)) # Eqn. 2.47
   Ac <- vcmax * ((cbs - gamma_star) / (kr * (1 + obs/ko) + cbs)) # Eqn. 2.4
   
   results <- data.frame("tg_c" = tg_c,
@@ -103,6 +103,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
                         "jv ratio" = jmax/vcmax,
                         "Al" = Al,
                         "Ap" = Ap,
-                        "Ac" = Ac)
+                        "Ac" = Ac,
+                        "CCM" = CCM)
   return(results)
 }
