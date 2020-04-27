@@ -103,7 +103,6 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
                         "jv ratio" = jmax/vcmax,
                         "Al" = Al,
                         "Ap" = Ap,
-                        "Ac" = Ac,
-                        "CCM" = CCM)
+                        "Ac" = Ac)
   return(results)
 }
