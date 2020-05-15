@@ -4,7 +4,7 @@ calc_kp_temp_pa <- function(temp, z){ # Boyd 2015
   
   R <- 8.31 # in Joules
   temp_k <- temp + 273
-  kp_25 <- 16.0 # Pa Co2
+  kp_25 <- 13.9 # Pa Co2
   kp_25 <- kp_25 * rat
   Ea <- 36.3 # kJ mol-1
   Ea_j <- Ea * 1000

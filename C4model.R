@@ -35,7 +35,8 @@
 ## Ac: Rubisco-limited photosynthesis (?mol m-2 s-1)
 
 C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460, 
-                  paro = 800, q025 = 0.25, theta = 0.85, R = 8.314){
+                  paro = 800, q025 = 0.25, theta = 0.85, leakiness = 0.01, 
+                  R = 8.314){
   
   # environmental terms
   patm <- calc_patm(z)
@@ -57,7 +58,8 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   # Light Limited Photosynthesis
     
   # Jmax
-  omega <- calc_omega(theta = theta, c = 0.01, m = 1) # Eq. S4
+  m <- (ci - gamma_star) / (ci + 2 * gamma_star)
+  omega <- calc_omega(theta = theta, c = 0.01, m) # Eq. S4
   omega_star <- (1 + (omega) - sqrt((1 + (omega))^2 - (4 * theta * omega)))  # Eq. 18
   
   q0 = q025 * phi_ftemp(tg_c)
@@ -76,7 +78,8 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   Ap <- vpmax * (cm / (cm + kp))
   
   # calc cbs
-  cbs <- calc_cbs(z, Al, vpmax, cm) # Eqn. 2.41
+  leakage <- leakiness * Al
+  cbs <- calc_cbs(cm, leakage) # Eqn. 2.41
   # calc obs
   obs <- oi
   
@@ -86,6 +89,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   
   results <- data.frame("tg_c" = tg_c,
                         "par" = par,
+                        "cao" = cao,
                         "ca" = ca,
                         "oa" = oa,
                         "z" = z,
@@ -95,6 +99,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
                         "kr" = kr,
                         "chi" = chi,
                         "ci" = ci,
+                        "Leakage" = leakage,
                         "cbs" = cbs,
                         "obs" = obs,
                         "jmax" = jmax,
