@@ -24,6 +24,7 @@
 ## kr: Michaelis-Menten constant for Rubisco carboxylation (Pa)
 ## chi: leaf intercellular to atmospheric CO2 ratio (ci/ca) (unitless)
 ## ci: leaf intercellular CO2 concentation (Pa)
+## Leakage: Rate of leakage of CO2 from bundle sheath to mesophyll (?mol m-2 s-1)
 ## cbs: bundle sheath CO2 pressure (Pa)
 ## obs: bundle sheath O2 pressure (Pa)
 ## jmax: optimal maximum rate of electron transport at tg (?mol m-2 s-1)
@@ -49,7 +50,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   gamma_star <- calc_gammastar_pa(tg_c, z) # pa
   
   # calc chi
-  chi <- calc_chi_xi_resp(cao, tg_c, vpd, z, gamma_star)
+  chi <- calc_chi(cao, tg_c, vpd, z, gamma_star)
   # calc ci ( = cm)
   ci <- ca * chi
   cm <- ci
