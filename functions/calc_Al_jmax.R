@@ -1,4 +1,4 @@
-calc_Al_jmax <- function(jmax, tg_c, par){
+calc_Al_jmax <- function(jmax, tg_c, par, q025, theta){
   q0 <- q025 * phi_ftemp(tg_c)
   
   omega <- jmax / (q0 * par)

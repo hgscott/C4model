@@ -59,7 +59,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
     
   # Jmax
   m <- (ci - gamma_star) / (ci + 2 * gamma_star)
-  omega <- calc_omega(theta = theta, c = 0.01, m) # Eq. S4
+  omega <- calc_omega(theta = theta, c = 0.01, m = m) # Eq. S4
   omega_star <- (1 + (omega) - sqrt((1 + (omega))^2 - (4 * theta * omega)))  # Eq. 18
   
   q0 = q025 * phi_ftemp(tg_c)
