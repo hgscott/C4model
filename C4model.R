@@ -50,7 +50,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   gamma_star <- calc_gammastar_pa(tg_c, z) # pa
   
   # calc chi
-  chi <- calc_chi(cao, tg_c, vpd, z, gamma_star)
+  chi_m <- calc_chi(cao, tg_c, vpd, z, gamma_star)
   # calc ci ( = cm)
   ci <- ca * chi
   cm <- ci
@@ -81,6 +81,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   # calc cbs
   leakage <- leakiness * Al
   cbs <- calc_cbs(cm, leakage) # Eqn. 2.41
+  chi_bs <- cbs / ca
   # calc obs
   obs <- oi
   
@@ -98,15 +99,18 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
                         "q0" = q0,
                         "kp" = kp,
                         "kr" = kr,
-                        "chi" = chi,
+                        "chi_m" = chi_m,
                         "ci" = ci,
                         "Leakage" = leakage,
                         "cbs" = cbs,
+                        "chi_bs" = chi_bs,
                         "obs" = obs,
                         "jmax" = jmax,
                         "vpmax" = vpmax,
                         "vcmax" = vcmax,
-                        "jv ratio" = jmax/vcmax,
+                        "jvc_ratio" = jmax/vcmax,
+                        "jvp_ratio" = jmax/vpmax,
+                        "vcvp_ratio" = vcmax/vpmax,
                         "Al" = Al,
                         "Ap" = Ap,
                         "Ac" = Ac)

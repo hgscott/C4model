@@ -10,7 +10,7 @@ calc_chi <- function(ca, temp, vpd, z, Gamma_star){
   R <- 8.3145 # Pa
   tempK <- temp + 273.15
   vpd_pa <- vpd * 1000
-  beta <- 53.4817
+  beta <- 45.3881
   
   Kr_25 <- 94.7 # Pa
   Ea_Kr <- 64200 # J mol^-1, from Boyd 2015 to match everything else
