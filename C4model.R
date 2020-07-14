@@ -52,9 +52,9 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   # calc chi
   chi_m <- calc_chi(cao, tg_c, vpd, z, gamma_star)
   # calc ci ( = cm)
-  ci <- ca * chi
+  ci <- ca * chi_m
   cm <- ci
-  oi <- oa * chi
+  oi <- oa * chi_m
     
   # Light Limited Photosynthesis
     
