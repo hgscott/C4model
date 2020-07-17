@@ -11,7 +11,7 @@ Instantaenous_Response <- function(tg_c = 25,
   # Run the full model at the acclimated conditions
   acclim_res <- C4model()
   
-  acclim_chi <- acclim_res$chi
+  acclim_chi <- acclim_res$chi_m
   acclim_jmax <- acclim_res$jmax
   acclim_vpmax <- acclim_res$vpmax
   acclim_vcmax <- acclim_res$vcmax

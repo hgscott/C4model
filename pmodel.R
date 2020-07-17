@@ -18,7 +18,7 @@ pmodel = function(tg_c = 25, z = 0, vpdo = 1, cao = 400,
     gammastar <- calc_gammastar_pa(tg_c, z)   
     
     # Coordination and least-cost hypothesis model terms
-    chi <- calc_chi(tg_c, z, vpdo, cao)              # Eq. 1
+    chi <- calc_chi_c3(tg_c, z, vpdo, cao)              # Eq. 1
     ci <- chi * ca # Pa
     mc <- ((ci - gammastar) / (ci + km))             # Eq. 6
     m <- ((ci - gammastar)/(ci + (2 * gammastar)))   # Eq. 8
@@ -42,6 +42,7 @@ pmodel = function(tg_c = 25, z = 0, vpdo = 1, cao = 400,
     # output
     results <- data.frame("tg_c" = tg_c,
                           "par" = par,
+                          "cao" = cao,
                           "ca" = ca,
                           "z" = z,
                           "vpd" = vpd,
@@ -61,7 +62,7 @@ pmodel = function(tg_c = 25, z = 0, vpdo = 1, cao = 400,
   else if(c3c4 == 'c4'){
     
     # calc chi
-    chi <- calc_chi_xi(ca, tg_c, vpd, z)[1]
+    chi <- calc_chi(cao, tg_c, vpd, z, gamma_star)
     
     # calc ci ( = cm)
     ci <- chi * ca # Eqn. 2.36
