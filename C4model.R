@@ -36,7 +36,7 @@
 ## Ac: Rubisco-limited photosynthesis (?mol m-2 s-1)
 
 C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460, 
-                  paro = 800, q025 = 0.25, theta = 0.85, leakiness = 0.01, 
+                  paro = 800, theta = 0.85, leakiness = 0.01, 
                   R = 8.314){
   
   # environmental terms
@@ -50,7 +50,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   gamma_star <- calc_gammastar_pa(tg_c, z) # pa
   
   # calc chi
-  chi_m <- calc_chi(cao, tg_c, vpd, z, gamma_star)
+  chi_m <- calc_chi_c4(cao, tg_c, vpd, z, gamma_star)
   # calc ci ( = cm)
   ci <- ca * chi_m
   cm <- ci
@@ -63,7 +63,8 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   omega <- calc_omega(theta = theta, c = 0.01, m = m) # Eq. S4
   omega_star <- (1 + (omega) - sqrt((1 + (omega))^2 - (4 * theta * omega)))  # Eq. 18
   
-  q0 = q025 * phi_ftemp(tg_c)
+  # calculate q0 using Bernacchi et al. (2003) temperature response (set to 0.257 at 25C)
+  q0 = -0.0805 + (0.022 * tg_c) - (0.00034 * tg_c * tg_c)
   Al <- q0 * par * omega_star / (8 * theta) # Eqn. 2.2
   jmax = q0 * par * omega
     
@@ -113,6 +114,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
                         "vcvp_ratio" = vcmax/vpmax,
                         "Al" = Al,
                         "Ap" = Ap,
-                        "Ac" = Ac)
+                        "Ac" = Ac,
+                        "Gamma" = gamma_star)
   return(results)
 }

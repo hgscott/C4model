@@ -3,7 +3,7 @@
 # to replace the calc chis
 # real header to come, next week, or you know, never
 
-calc_chi <- function(ca, temp, vpd, z, Gamma_star){
+calc_chi_c4 <- function(ca, temp, vpd, z, Gamma_star){
   patm <- calc_patm(z)
   ca_pa <- ca * 1e-6 * patm
   
@@ -21,7 +21,7 @@ calc_chi <- function(ca, temp, vpd, z, Gamma_star){
   Kp <- Kp_25 * exp((Ea_Kp * (tempK - 298.15))/(298.15 * R * tempK))
   
   eta_star <- calc_nstar(temp, z)
-  eta_star <- eta_star[[1]]
+  # eta_star <- eta_star[[1]]
   
   xi <- sqrt((beta * (Kr + Kp + Gamma_star))/(1.6 * eta_star))
   chi <- (xi / (xi + sqrt(vpd_pa)))
