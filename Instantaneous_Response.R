@@ -38,7 +38,14 @@ Instantaenous_Response <- function(tg_c = 25,
   oi <- oa_pa * acclim_chi
   gamma_star_temp <- calc_gammastar_pa(tg_c, z) # Included an instantaneous response
   
-  Al <- calc_Al_jmax(jmax_temp, tg_c, paro, q0, theta)
+  m <- (ci - gamma_star_temp) / (ci + 2 * gamma_star_temp)
+  omega <- calc_omega(theta = theta, c = 0.01, m = m) # Eq. S4
+  omega_star <- (1 + (omega) - sqrt((1 + (omega))^2 - (4 * theta * omega)))
+  
+  q0 <- -0.0805 + (0.022 * tg_c) - (0.00034 * tg_c * tg_c)
+  Al <- q0 * paro * omega_star / (8 * theta) # Eqn. 2.2
+  
+  # Al <- calc_Al_jmax(jmax_temp, tg_c, paro, q0, theta)
   Ac <- vc_temp * ((cbs - gamma_star_temp) / (kr_temp * (1 + oi/ko_temp) + cbs))
   Ap <- (ci * vp_temp)/(kp_temp + ci)
   
