@@ -65,7 +65,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   
   # calculate q0 using Bernacchi et al. (2003) temperature response (set to 0.257 at 25C)
   q0 = -0.0805 + (0.022 * tg_c) - (0.00034 * tg_c * tg_c)
-  Al <- q0 * par * omega_star / (8 * theta) # Eqn. 2.2
+  Al <- q0 * par * m * omega_star / (8 * theta) # Eqn. 2.2
   jmax = q0 * par * omega
     
   # calc kp
@@ -76,7 +76,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   ko <- calc_ko_temp_pa(tg_c, z)
    
   # calc vpmax
-  vpmax <- ((kp + cm)/cm) * (q0 * par * omega_star / (8 * theta)) # Eqn. 2.42
+  vpmax <- ((kp + cm)/cm) * (q0 * par * m * omega_star / (8 * theta)) # Eqn. 2.42
   Ap <- vpmax * (cm / (cm + kp))
   
   # calc cbs
@@ -87,7 +87,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   obs <- oi
   
   # calc vcmax
-  vcmax <- (q0 * par * omega_star / (8 * theta)) * ((cbs + kr * (1 + obs/ko)) / (cbs - gamma_star)) # Eqn. 2.47
+  vcmax <- (q0 * par * m * omega_star / (8 * theta)) * ((cbs + kr * (1 + obs/ko)) / (cbs - gamma_star)) # Eqn. 2.47
   Ac <- vcmax * ((cbs - gamma_star) / (kr * (1 + obs/ko) + cbs)) # Eqn. 2.4
   
   results <- data.frame("tg_c" = tg_c,
