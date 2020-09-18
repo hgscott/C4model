@@ -75,8 +75,8 @@ chi_temp <- ggplot(filter(temp_seq, Path == "C4" & Status == "Acclimated" &
                           measure == "chi_m_std"|measure == "chi_bs_std"),
                    aes(tg_c, value, group = measure)) + 
   geom_line(size = 2, aes(linetype = measure, color = measure)) +
-  scale_linetype_manual(values=c("solid", "dashed"), labels = labs[6:7]) +
-  scale_color_manual(values=c("#D53E4F", "#3288BD"), labels = labs[6:7]) +
+  scale_linetype_manual(values=c("solid", "dashed"), labels = labs[c(7, 6)]) +
+  scale_color_manual(values=c("#D53E4F", "#3288BD"), labels = labs[c(7, 6)]) +
   labs(y = labs[1], x = labs[2]) + 
   theme(axis.title.x = element_text(size = 18),
         axis.title.y = element_text(size = 18),
@@ -90,8 +90,8 @@ chi_light <- ggplot(filter(par_seq, Path == "C4" & Status == "Acclimated" &
                             measure == "chi_m_std"|measure == "chi_bs_std"),
                    aes(par, value, group = measure)) + 
   geom_line(size = 2, aes(linetype = measure, color = measure)) +
-  scale_linetype_manual(values=c("solid", "dashed"), labels = labs[6:7]) +
-  scale_color_manual(values=c("#D53E4F", "#3288BD"), labels = labs[6:7]) +
+  scale_linetype_manual(values=c("solid", "dashed"), labels = labs[c(7, 6)]) +
+  scale_color_manual(values=c("#D53E4F", "#3288BD"), labels = labs[c(7, 6)]) +
   labs(y= labs[14], x = labs[3]) +
   theme(axis.title.y = element_text(size = 18),
         axis.title.x = element_text(size = 18),
@@ -103,8 +103,8 @@ chi_co2 <- ggplot(filter(co2_seq, Path == "C4" & Status == "Acclimated" &
                             measure == "chi_m_std"|measure == "chi_bs_std"),
                    aes(cao, value, group = measure)) + 
   geom_line(size = 2, aes(linetype = measure, color = measure)) +
-  scale_linetype_manual(values=c("solid", "dashed"), labels = labs[6:7]) +
-  scale_color_manual(values=c("#D53E4F", "#3288BD"), labels = labs[6:7]) +
+  scale_linetype_manual(values=c("solid", "dashed"), labels = labs[c(7, 6)]) +
+  scale_color_manual(values=c("#D53E4F", "#3288BD"), labels = labs[c(7, 6)]) +
   labs(y = labs[1], x = labs[4]) +
   theme(axis.title.x = element_text(size = 18),
         axis.title.y = element_text(size = 18),
@@ -116,8 +116,8 @@ chi_vpd <- ggplot(filter(vpd_seq, Path == "C4" & Status == "Acclimated" &
                             measure == "chi_m_std"|measure == "chi_bs_std"),
                    aes(vpd, value, group = measure)) + 
   geom_line(size = 2, aes(linetype = measure, color = measure)) +
-  scale_linetype_manual(values=c("solid", "dashed"), labels = labs[6:7]) +
-  scale_color_manual(values=c("#D53E4F", "#3288BD"), labels = labs[6:7]) +
+  scale_linetype_manual(values=c("solid", "dashed"), labels = labs[c(7, 6)]) +
+  scale_color_manual(values=c("#D53E4F", "#3288BD"), labels = labs[c(7, 6)]) +
   labs(y = labs[14], x = labs[5]) +
   theme(axis.title.y = element_text(size = 18),
         axis.title.x = element_text(size = 18),

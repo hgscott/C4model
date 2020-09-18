@@ -4,7 +4,6 @@ Instantaenous_Response <- function(tg_c = 25,
                                    cao = 400,
                                    oao = 209460, 
                                    paro = 800,
-                                   q025 = 0.25,
                                    theta = 0.85,
                                    R = 8.314){
   
@@ -16,6 +15,8 @@ Instantaenous_Response <- function(tg_c = 25,
   acclim_vpmax <- acclim_res$vpmax
   acclim_vcmax <- acclim_res$vcmax
   acclim_leak <- acclim_res$Leakage
+  
+  q0 = -0.0805 + (0.022 * tg_c) - (0.00034 * tg_c * tg_c)
   
   jmax_temp <- calc_jmax_temp(acclim_jmax, tg_c, R)
   
@@ -37,7 +38,7 @@ Instantaenous_Response <- function(tg_c = 25,
   oi <- oa_pa * acclim_chi
   gamma_star_temp <- calc_gammastar_pa(tg_c, z) # Included an instantaneous response
   
-  Al <- calc_Al_jmax(jmax_temp, tg_c, paro, q025, theta)
+  Al <- calc_Al_jmax(jmax_temp, tg_c, paro, q0, theta)
   Ac <- vc_temp * ((cbs - gamma_star_temp) / (kr_temp * (1 + oi/ko_temp) + cbs))
   Ap <- (ci * vp_temp)/(kp_temp + ci)
   
