@@ -1,5 +1,5 @@
-calc_Al_jmax <- function(jmax, tg_c, par, q025, theta){
-  q0 <- q025 * phi_ftemp(tg_c)
+calc_Al_jmax <- function(jmax, tg_c, par, q0, theta){
+  # q0 <- q025 * phi_ftemp(tg_c)
   
   omega <- jmax / (q0 * par)
   omega_star <- (1 + (omega) - sqrt((1 + (omega))^2 - (4 * theta * omega)))
