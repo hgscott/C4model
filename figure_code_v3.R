@@ -366,18 +366,15 @@ res_c4s <- C4model(tg_c = clim_globe[, "tmp"],
                    paro = clim_globe[, "par"])
 
 # Calculate C3 A
-res_c3s <- pmodel(tg_c = clim_globe[, "tmp"],
+res_c3s <- calc_optimal_vcmax(tg_c = clim_globe[, "tmp"],
                   z = clim_globe[, "z"],
                   vpdo = clim_globe[, "vpd"],
                   cao = clim_globe[, "co2"],
                   paro = clim_globe[, "par"],
-                  q025 = 0.25,
-                  theta = 0.85,
-                  R = 8.314,
-                  c3c4 = "c3")
+                  theta = 0.85)
 
 # Calculate DeltaA
-deltaA <- ((res_c4s$Ac - res_c3s$A) / res_c3s$A) * 100
+deltaA <- ((res_c4s$Ac - (res_c3s$vcmax * res_c3s$m)) / (res_c3s$vcmax * res_c3s$m)) * 100
 res_deltaA_plots <- cbind(clim_cover, deltaA)
 deltaA_df <- as.data.frame(res_deltaA_plots)
 

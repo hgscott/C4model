@@ -26,7 +26,7 @@ prep_long_data <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   c4_long <- gather(c4_final, measure, value, -tg_c, -par, -vpd, -cao, -Path, -Status)
   
   # C3 model
-  c3_seq = calc_optimal_vcmax(tg_c = tg_c, z = z, vpdo = vpdo, 
+  c3_seq <- calc_optimal_vcmax(tg_c = tg_c, z = z, vpdo = vpdo, 
                               cao = cao, paro = paro, 
                               theta = theta)
   c3_seq$A <- c3_seq$vcmax * c3_seq$mc
