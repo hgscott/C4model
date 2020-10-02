@@ -374,13 +374,13 @@ res_c3s <- calc_optimal_vcmax(tg_c = clim_globe[, "tmp"],
                   theta = 0.85)
 
 # Calculate DeltaA
-deltaA <- ((res_c4s$Ac - (res_c3s$vcmax * res_c3s$m)) / (res_c3s$vcmax * res_c3s$m)) * 100
+deltaA <- ((res_c4s$Ac - (res_c3s$vcmax * res_c3s$mc)) / (res_c3s$vcmax * res_c3s$mc)) * 100
 res_deltaA_plots <- cbind(clim_cover, deltaA)
 deltaA_df <- as.data.frame(res_deltaA_plots)
 
 # NASA percent composition data
 # Read in data
-data <- raster("NASA Percent Data/data/c4_percent_1d.asc") # Remove when sharing
+data <- raster('C:/Users/hscott/Documents/GitHub/Publication2020/NASA Percent Data/data/c4_percent_1d.asc') # Remove when sharing
 # Extract data
 rasValue <- raster::extract(data, lon_lat)
 # Bind it to the lat_lim values
