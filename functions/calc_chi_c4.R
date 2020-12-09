@@ -10,7 +10,7 @@ calc_chi_c4 <- function(ca, temp, vpd, z, Gamma_star){
   R <- 8.3145 # Pa
   tempK <- temp + 273.15
   vpd_pa <- vpd * 1000
-  beta <- 45.3881
+  beta <- 166
   
   Kr_25 <- 94.7 # Pa
   Ea_Kr <- 64200 # J mol^-1, from Boyd 2015 to match everything else
@@ -23,7 +23,7 @@ calc_chi_c4 <- function(ca, temp, vpd, z, Gamma_star){
   eta_star <- calc_nstar(temp, z)
   # eta_star <- eta_star[[1]]
   
-  xi <- sqrt((beta * (Kr + Kp + Gamma_star))/(1.6 * eta_star))
+  xi <- sqrt(sqrt((beta * (Kp + Gamma_star)) / (1.6 * eta_star)))
   chi <- (xi / (xi + sqrt(vpd_pa)))
   ci <- ((xi * ca_pa) + (Gamma_star * sqrt(vpd_pa)))/(xi * sqrt(vpd_pa))
   # res <- c(chi, ci)

@@ -30,8 +30,10 @@ library(lme4)
 setwd("~/GitHub/C4model")
 source("C4model.R")
 sourceDirectory("functions/", modifiedOnly = FALSE)
-source("pmodel.R")
 source("Instantaneous_Response.R")
+source("prep_long_data.R")
+
+# Source Nick Smith's C3 model
 source('~/GitHub/optimal_vcmax_R/calc_optimal_vcmax.R')
 sourceDirectory('~/GitHub/optimal_vcmax_R/functions', modifiedOnly = FALSE)
 
@@ -58,8 +60,8 @@ labs <- c("Scaled Value",
           expression(chi["m"]),
           expression(chi["bs"]),
           expression('J'[max]),
-          expression('V'[pmax]),
           expression('V'[cmax]),
+          expression('V'[pmax]),
           expression(paste('J'[max], "/", 'V'[cmax])),
           expression(paste('J'[max], "/", 'V'[pmax])),
           expression(paste('V'[cmax], "/", 'V'[pmax])),
@@ -78,6 +80,7 @@ chi_temp <- ggplot(filter(temp_seq, Path == "C4" & Status == "Acclimated" &
   scale_linetype_manual(values=c("solid", "dashed"), labels = labs[c(7, 6)]) +
   scale_color_manual(values=c("#D53E4F", "#3288BD"), labels = labs[c(7, 6)]) +
   labs(y = labs[1], x = labs[2]) + 
+  coord_cartesian(ylim = c(0.25, 1.6)) +
   theme(axis.title.x = element_text(size = 18),
         axis.title.y = element_text(size = 18),
         axis.text.x = element_text(size = 14),
@@ -93,6 +96,7 @@ chi_light <- ggplot(filter(par_seq, Path == "C4" & Status == "Acclimated" &
   scale_linetype_manual(values=c("solid", "dashed"), labels = labs[c(7, 6)]) +
   scale_color_manual(values=c("#D53E4F", "#3288BD"), labels = labs[c(7, 6)]) +
   labs(y= labs[14], x = labs[3]) +
+  coord_cartesian(ylim = c(0.25, 1.6)) +
   theme(axis.title.y = element_text(size = 18),
         axis.title.x = element_text(size = 18),
         axis.text.x = element_text(size = 14),
@@ -106,6 +110,7 @@ chi_co2 <- ggplot(filter(co2_seq, Path == "C4" & Status == "Acclimated" &
   scale_linetype_manual(values=c("solid", "dashed"), labels = labs[c(7, 6)]) +
   scale_color_manual(values=c("#D53E4F", "#3288BD"), labels = labs[c(7, 6)]) +
   labs(y = labs[1], x = labs[4]) +
+  coord_cartesian(ylim = c(0.25, 1.6)) + 
   theme(axis.title.x = element_text(size = 18),
         axis.title.y = element_text(size = 18),
         axis.text.x = element_text(size = 14),
@@ -119,6 +124,7 @@ chi_vpd <- ggplot(filter(vpd_seq, Path == "C4" & Status == "Acclimated" &
   scale_linetype_manual(values=c("solid", "dashed"), labels = labs[c(7, 6)]) +
   scale_color_manual(values=c("#D53E4F", "#3288BD"), labels = labs[c(7, 6)]) +
   labs(y = labs[14], x = labs[5]) +
+  coord_cartesian(ylim = c(0.25, 1.6)) + 
   theme(axis.title.y = element_text(size = 18),
         axis.title.x = element_text(size = 18),
         axis.text.x = element_text(size = 14),
@@ -138,6 +144,7 @@ bc_temp <- ggplot(filter(temp_seq, Path == "C4" & Status == "Acclimated" &
   scale_linetype_manual(values=c("solid", "dashed", "dotted"), labels = labs[8:10]) +
   scale_color_manual(values=c("#D53E4F", "#3288BD", "#66C2A5"), labels = labs[8:10]) +
   labs(y = labs[1], x = labs[2]) + 
+  coord_cartesian(ylim = c(0, 2)) +
   theme(axis.title.x = element_text(size = 18),
         axis.title.y = element_text(size = 18),
         axis.text.x = element_text(size = 14),
@@ -155,6 +162,7 @@ bc_light <- ggplot(filter(par_seq, Path == "C4" & Status == "Acclimated" &
   scale_linetype_manual(values=c("solid", "dashed", "dotted"), labels = labs[8:10]) +
   scale_color_manual(values=c("#D53E4F", "#3288BD", "#66C2A5"), labels = labs[8:10]) +
   labs(y = labs[14], x = labs[3]) + 
+  coord_cartesian(ylim = c(0, 2)) +
   theme(axis.title.x = element_text(size = 18),
         axis.title.y = element_text(size = 18),
         axis.text.x = element_text(size = 14),
@@ -171,6 +179,7 @@ bc_co2 <- ggplot(filter(co2_seq, Path == "C4" & Status == "Acclimated" &
   scale_linetype_manual(values=c("solid", "dashed", "dotted"), labels = labs[8:10]) +
   scale_color_manual(values=c("#D53E4F", "#3288BD", "#66C2A5"), labels = labs[8:10]) +
   labs(y = labs[1], x = labs[4]) + 
+  coord_cartesian(ylim = c(0, 2)) +
   theme(axis.title.x = element_text(size = 18),
         axis.title.y = element_text(size = 18),
         axis.text.x = element_text(size = 14),
@@ -187,6 +196,7 @@ bc_vpd <- ggplot(filter(vpd_seq, Path == "C4" & Status == "Acclimated" &
   scale_linetype_manual(values=c("solid", "dashed", "dotted"), labels = labs[8:10]) +
   scale_color_manual(values=c("#D53E4F", "#3288BD", "#66C2A5"), labels = labs[8:10]) +
   labs(y = labs[14], x = labs[5]) + 
+  coord_cartesian(ylim = c(0, 2)) +
   theme(axis.title.x = element_text(size = 18),
         axis.title.y = element_text(size = 18),
         axis.text.x = element_text(size = 14),
@@ -210,6 +220,25 @@ rat_temp <- ggplot(filter(temp_seq, Path == "C4" & Status == "Acclimated" &
   scale_linetype_manual(values=c("solid", "dashed", "dotted"), labels = labs[11:13]) +
   scale_color_manual(values=c("#D53E4F", "#3288BD", "#66C2A5"), labels = labs[11:13]) +
   labs(y = labs[1], x = labs[2]) + 
+  coord_cartesian(ylim = c(0.25, 3.75)) +
+  theme(axis.title.x = element_text(size = 18),
+        axis.title.y = element_text(size = 18),
+        axis.text.x = element_text(size = 14),
+        axis.text.y = element_text(size = 14),
+        legend.position = "bottom",
+        legend.title = element_blank(),
+        legend.text = element_text(size = 14),
+        legend.key.size = unit(1.5, "cm"))
+
+rat_light <- ggplot(filter(par_seq, Path == "C4" & Status == "Acclimated" &
+                            measure == "jvc_ratio_std" | measure == "jvp_ratio_std" |
+                            measure == "vcvp_ratio_std"),
+                   aes(par, value, group = measure)) + 
+  geom_line(size = 2, aes(linetype = measure, color = measure)) +
+  scale_linetype_manual(values=c("solid", "dashed", "dotted"), labels = labs[11:13]) +
+  scale_color_manual(values=c("#D53E4F", "#3288BD", "#66C2A5"), labels = labs[11:13]) +
+  labs(y = labs[1], x = labs[3]) + 
+  coord_cartesian(ylim = c(0.25, 3.75)) +
   theme(axis.title.x = element_text(size = 18),
         axis.title.y = element_text(size = 18),
         axis.text.x = element_text(size = 14),
@@ -227,6 +256,7 @@ rat_co2 <- ggplot(filter(co2_seq, Path == "C4" & Status == "Acclimated" &
   scale_linetype_manual(values=c("solid", "dashed", "dotted"), labels = labs[11:13]) +
   scale_color_manual(values=c("#D53E4F", "#3288BD", "#66C2A5"), labels = labs[11:13]) +
   labs(y = labs[1], x = labs[4]) + 
+  coord_cartesian(ylim = c(0.25, 3.75)) +
   theme(axis.title.x = element_text(size = 18),
         axis.title.y = element_text(size = 18),
         axis.text.x = element_text(size = 14),
@@ -241,16 +271,17 @@ rat_vpd <- ggplot(filter(vpd_seq, Path == "C4" & Status == "Acclimated" &
   scale_linetype_manual(values=c("solid", "dashed", "dotted"), labels = labs[11:13]) +
   scale_color_manual(values=c("#D53E4F", "#3288BD", "#66C2A5"), labels = labs[11:13]) +
   labs(y = labs[1], x = labs[5]) + 
+  coord_cartesian(ylim = c(0.25, 3.75)) +
   theme(axis.title.x = element_text(size = 18),
         axis.title.y = element_text(size = 18),
         axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
         legend.position = "none")
 
-ggarrange(rat_temp, rat_co2, rat_vpd, nrow = 3, common.legend = TRUE, 
-          legend="bottom", labels = c("A", "B", "C"), 
-          hjust = 0.25)
-ggsave("ratios.png", width = height, height = width, units = units) # Did the opposite on purpose
+ggarrange(rat_temp, rat_light, rat_co2, rat_vpd, ncol = 2, nrow = 2,
+          common.legend = TRUE, legend="bottom", labels = c("A", "B", "C", "D"),
+          hjust = c(0, 0.25, 0, 0.25))
+ggsave("ratios.png", width = width, height = height, units = units)
 
 #### C4 (acclimated and unacclimated) vs C3 (acclimated) A (unscaled) #####
 a_temp <- ggplot(filter(temp_seq, measure == "Ac" | measure == "A" | measure == "An"),
@@ -259,6 +290,7 @@ a_temp <- ggplot(filter(temp_seq, measure == "Ac" | measure == "A" | measure == 
   scale_linetype_manual(values=c("solid", "dashed", "dotted"), labels = labs[15:17]) +
   scale_color_manual(values=c("#D53E4F", "#3288BD", "#66C2A5"), labels = labs[15:17]) +
   labs(y = labs[18], x = labs[2]) + 
+  coord_cartesian(ylim = c(0, 40)) +
   theme(axis.title.x = element_text(size = 18),
         axis.title.y = element_text(size = 18),
         axis.text.x = element_text(size = 14),
@@ -274,6 +306,7 @@ a_light <- ggplot(filter(par_seq, measure == "Ac" | measure == "A" | measure == 
   scale_linetype_manual(values=c("solid", "dashed", "dotted"), labels = labs[15:17]) +
   scale_color_manual(values=c("#D53E4F", "#3288BD", "#66C2A5"), labels = labs[15:17]) +
   labs(y = labs[18], x = labs[3]) + 
+  coord_cartesian(ylim = c(0, 40)) +
   theme(axis.title.x = element_text(size = 18),
         axis.title.y = element_text(size = 18),
         axis.text.x = element_text(size = 14),
@@ -289,6 +322,7 @@ a_co2 <- ggplot(filter(co2_seq, measure == "Ac" | measure == "A" | measure == "A
   scale_linetype_manual(values=c("solid", "dashed", "dotted"), labels = labs[15:17]) +
   scale_color_manual(values=c("#D53E4F", "#3288BD", "#66C2A5"), labels = labs[15:17]) +
   labs(y = labs[18], x = labs[4]) + 
+  coord_cartesian(ylim = c(0, 40)) +
   theme(axis.title.x = element_text(size = 18),
         axis.title.y = element_text(size = 18),
         axis.text.x = element_text(size = 14),
@@ -304,6 +338,7 @@ a_vpd <- ggplot(filter(vpd_seq, measure == "Ac" | measure == "A" | measure == "A
   scale_linetype_manual(values=c("solid", "dashed", "dotted"), labels = labs[15:17]) +
   scale_color_manual(values=c("#D53E4F", "#3288BD", "#66C2A5"), labels = labs[15:17]) +
   labs(y = labs[18], x = labs[5]) + 
+  coord_cartesian(ylim = c(0, 40)) +
   theme(axis.title.x = element_text(size = 18),
         axis.title.y = element_text(size = 18),
         axis.text.x = element_text(size = 14),
@@ -317,8 +352,6 @@ ggarrange(a_temp, a_light, a_co2, a_vpd, ncol=2, nrow=2,
           common.legend = TRUE, legend="bottom", labels = c("A", "B", "C", "D"),
           hjust = c(0, 0.5, 0, 0.5))
 ggsave("A.png", width = width, height = width, units = units) # Mismatch on purpsoe
-
-
 
 #### Scatter Plot ####
 # Lat/Lon for rasters
@@ -398,27 +431,10 @@ grasslands <- veg_cover[veg_cover$Land_Cover_Type == "Grasslands" |
                           veg_cover$Land_Cover_Type == "Open Shrublands" |
                           veg_cover$Land_Cover_Type == "Woody Savannas", ]
 
-
-plot <- ggplot(grasslands, aes(rasValue, calc_deltaA, color = Land_Cover_Type)) +
-  geom_point(alpha = 0.3) +
-  stat_smooth(method=lm, size = 2) +
-  lims(y = c(0, 130)) +
-  labs(y = expression(paste(Delta, A," (%)")),
-       x = expression(paste('C'[4], " Vegetation (%)"))) + 
-  theme(axis.title.x = element_text(size = 18),
-        axis.title.y = element_text(size = 18),
-        axis.text.x = element_text(size = 14),
-        axis.text.y = element_text(size = 14)) +
-  stat_cor(aes(color = Land_Cover_Type),
-           label.x.npc = "middle",
-           label.y.npc = "bottom",
-           size = 5)
-
-# Nick's ask- Don't separate by color
+# Plot, with a single trendline for all biomes
 plot <- ggplot(grasslands, aes(rasValue, calc_deltaA)) +
   geom_point(alpha = 0.3) +
   stat_smooth(method=lm, size = 2) +
-  lims(y = c(0, 130)) +
   labs(y = expression(paste(Delta, A," (%)")),
        x = expression(paste('C'[4], " Vegetation (%)"))) + 
   theme(axis.title.x = element_text(size = 18),
@@ -428,3 +444,5 @@ plot <- ggplot(grasslands, aes(rasValue, calc_deltaA)) +
   stat_cor(label.x.npc = "middle",
            label.y.npc = "bottom",
            size = 5)
+# Save plot as png
+ggsave("scatterplot.png", width = width, height = height, units = units)
