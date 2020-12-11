@@ -51,7 +51,7 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   gamma_star <- calc_gammastar_pa_c4(tg_c, z) # pa
   
   # calc chi
-  chi_m <- calc_chi_c4(cao, tg_c, vpd, z, gamma_star)
+  chi_m <- calc_chi_c4(cao, tg_c, vpd, z)
   # calc ci ( = cm)
   ci <- ca * chi_m
   cm <- ci
