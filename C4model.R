@@ -1,6 +1,6 @@
 # C4model: Predicts acclimated 
 # Helen Scott
-# Last Updated: 03/27/2020
+# Last Updated: 12/18/2020
 #
 # Arguments
 ## tg_c: acclimated temperature (degC)
@@ -9,7 +9,6 @@
 ## cao: atmospheric CO2 at sea level (ppm)
 ## oao: atmospheric O2 at sea level (ppm)
 ## paro: photosynthetically active radiation at sea level (?mol m-2 s-1)
-## q025: quantum efficiency of photosynthetic electron transport (mol/mol)
 ## theta: curvature of the light response of electron transport (unitless)
 ## R: universal gas constant (J mol-1 K-1)
 #
@@ -19,7 +18,7 @@
 ## ca: atmospheric CO2 at z (Pa)
 ## z: elevation (m)
 ## vpd: vapor pressure deficit at z (kPa)
-## q0: quantum efficiency of photosynthetic electron transport at tg_c (mol/mol)
+## q0: quantum efficiency of photosynthetic electron transport at tg_c (mol/mol) # NOT AN INPUT ANYMORE
 ## kp: michaelis menten coefficient for PEPc (Pa)
 ## kr: Michaelis-Menten constant for Rubisco carboxylation (Pa)
 ## chi: leaf intercellular to atmospheric CO2 ratio (ci/ca) (unitless)
@@ -58,16 +57,13 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   oi <- oa * chi_m
     
   # Light Limited Photosynthesis
-    
-  # Jmax
   m <- (ci - gamma_star) / (ci + 2 * gamma_star)
   omega <- calc_omega(theta = theta, c = 0.01, m = m) # Eq. S4
   omega_star <- (1 + (omega) - sqrt((1 + (omega))^2 - (4 * theta * omega)))  # Eq. 18
-  
   # calculate q0 using Bernacchi et al. (2003) temperature response (set to 0.257 at 25C)
-  q0 = -0.0805 + (0.022 * tg_c) - (0.00034 * tg_c * tg_c)
+  q0 <- -0.0805 + (0.022 * tg_c) - (0.00034 * tg_c * tg_c)
   Al <- q0 * par * m * omega_star / (8 * theta) # Eqn. 2.2
-  jmax = q0 * par * omega
+  jmax <- q0 * par * omega
     
   # calc kp
   kp <- calc_kp_temp_pa(tg_c, z) # Eqn. 2.43

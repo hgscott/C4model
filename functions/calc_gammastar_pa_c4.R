@@ -2,23 +2,15 @@
 
 calc_gammastar_pa_c4 = function(temp, z) {
   
-  patm = calc_patm(z)
-  rat = calc_patm(z) / calc_patm(0)
+  patm <- calc_patm(z)
+  rat <- calc_patm(z) / calc_patm(0)
+  temp_k = 273.15 + temp
   
-  #gammastar25 = 42.75  # ppm
-  # Need to drastically decrease gamma star 
   gammastar25 <- 2.6 * rat  # Pa
-  # gammastar25 = 4.332 * rat  # Pa
-  Hgm=37830 # J mol-1
-  R = 8.314        # J K-1 mol-1
-  O2 = 2.09476e5 # ppm
-  O2_0 = O2 * 1e-6 * calc_patm(0)
-  O2_z = O2 * 1e-6 * calc_patm(z)
+  Hgm <- 37830 # J mol-1
+  R <- 8.314        # J K-1 mol-1
+
+  gStar_pa <- gammastar25*exp((Hgm/R)*(1/298.15-1/temp_k))
   
-  temp_k = 273.15+ temp
-  
-  gStar_pa = gammastar25*exp((Hgm/R)*(1/298.15-1/temp_k))
-  
-  gStar_pa
-  
+  return(gStar_pa)
 }
