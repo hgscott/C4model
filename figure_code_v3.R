@@ -54,9 +54,9 @@ co2_seq <- prep_long_data(cao = c(200:1000))
 #### Plot Labels ####
 labs <- c("Scaled Value",
           "Temperature (C)",
-          expression(paste(Light," (", mu * mol %.% m^{-2} %.% s^{-1}, ")")),
+          expression(paste("Photosynthetically Active Radiation (", mu * mol %.% m^{-2} %.% s^{-1}, ")")),
           expression(paste('CO'[2], " (ppm)")),
-          "Vapour Pressure Deficit (kPa)",
+          "Vapor Pressure Deficit (kPa)",
           expression(chi["m"]),
           expression(chi["bs"]),
           expression('J'[max]),
@@ -78,15 +78,17 @@ chi_temp <- ggplot(filter(temp_seq, Path == "C4" & Status == "Acclimated" &
                    aes(tg_c, value, group = measure)) + 
   geom_line(size = 2, aes(linetype = measure, color = measure)) +
   scale_linetype_manual(values=c("solid", "dashed"), labels = labs[c(7, 6)]) +
-  scale_color_manual(values=c("#999999", "#000000"), labels = labs[c(7, 6)]) +
+  scale_color_manual(values=c("#000000", "#000000"), labels = labs[c(7, 6)]) +
   labs(y = labs[1], x = labs[2]) + 
   coord_cartesian(ylim = c(0.25, 1.6)) +
-  theme(axis.title.x = element_text(size = 18),
-        axis.title.y = element_text(size = 18),
+  theme_bw() +
+  theme(axis.title.y = element_text(size = 14),
+        axis.title.x = element_text(size = 14),
         axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
         legend.position = "bottom",
         legend.title = element_blank(),
+        legend.key.width = unit(5, "line"),
         legend.text = element_text(size = 14))
 
 chi_light <- ggplot(filter(par_seq, Path == "C4" & Status == "Acclimated" &
@@ -94,46 +96,59 @@ chi_light <- ggplot(filter(par_seq, Path == "C4" & Status == "Acclimated" &
                    aes(par, value, group = measure)) + 
   geom_line(size = 2, aes(linetype = measure, color = measure)) +
   scale_linetype_manual(values=c("solid", "dashed"), labels = labs[c(7, 6)]) +
-  scale_color_manual(values=c("#999999", "#000000"), labels = labs[c(7, 6)]) +
+  scale_color_manual(values=c("#000000", "#000000"), labels = labs[c(7, 6)]) +
   labs(y= labs[14], x = labs[3]) +
   coord_cartesian(ylim = c(0.25, 1.6)) +
-  theme(axis.title.y = element_text(size = 18),
-        axis.title.x = element_text(size = 18),
+  theme_bw() +
+  theme(axis.title.y = element_text(size = 14),
+        axis.title.x = element_text(size = 14),
         axis.text.x = element_text(size = 14),
-        axis.text.y = element_text(size = 14)
-        )
+        axis.text.y = element_text(size = 14),
+        legend.position = "bottom",
+        legend.title = element_blank(),
+        legend.key.width = unit(5, "line"),
+        legend.text = element_text(size = 14))
 
 chi_co2 <- ggplot(filter(co2_seq, Path == "C4" & Status == "Acclimated" &
                             measure == "chi_m_std"|measure == "chi_bs_std"),
                    aes(cao, value, group = measure)) + 
   geom_line(size = 2, aes(linetype = measure, color = measure)) +
   scale_linetype_manual(values=c("solid", "dashed"), labels = labs[c(7, 6)]) +
-  scale_color_manual(values=c("#999999", "#000000"), labels = labs[c(7, 6)]) +
+  scale_color_manual(values=c("#000000", "#000000"), labels = labs[c(7, 6)]) +
   labs(y = labs[1], x = labs[4]) +
   coord_cartesian(ylim = c(0.25, 1.6)) + 
-  theme(axis.title.x = element_text(size = 18),
-        axis.title.y = element_text(size = 18),
+  theme_bw() +
+  theme(axis.title.y = element_text(size = 14),
+        axis.title.x = element_text(size = 14),
         axis.text.x = element_text(size = 14),
-        axis.text.y = element_text(size = 14)
-  )
+        axis.text.y = element_text(size = 14),
+        legend.position = "bottom",
+        legend.title = element_blank(),
+        legend.key.width = unit(5, "line"),
+        legend.text = element_text(size = 14))
 
 chi_vpd <- ggplot(filter(vpd_seq, Path == "C4" & Status == "Acclimated" &
                             measure == "chi_m_std"|measure == "chi_bs_std"),
                    aes(vpd, value, group = measure)) + 
   geom_line(size = 2, aes(linetype = measure, color = measure)) +
   scale_linetype_manual(values=c("solid", "dashed"), labels = labs[c(7, 6)]) +
-  scale_color_manual(values=c("#999999", "#000000"), labels = labs[c(7, 6)]) +
+  scale_color_manual(values=c("#000000", "#000000"), labels = labs[c(7, 6)]) +
   labs(y = labs[14], x = labs[5]) +
-  coord_cartesian(ylim = c(0.25, 1.6)) + 
-  theme(axis.title.y = element_text(size = 18),
-        axis.title.x = element_text(size = 18),
+  coord_cartesian(ylim = c(0.25, 1.6)) +
+  theme_bw() +
+  theme(axis.title.y = element_text(size = 14),
+        axis.title.x = element_text(size = 14),
         axis.text.x = element_text(size = 14),
-        axis.text.y = element_text(size = 14)
-  )
+        axis.text.y = element_text(size = 14),
+        legend.position = "bottom",
+        legend.title = element_blank(),
+        legend.key.width = unit(5, "line"),
+        legend.text = element_text(size = 14))
+
 ggarrange(chi_temp, chi_light, chi_co2, chi_vpd, ncol = 2, nrow = 2,
           common.legend = TRUE, legend="bottom", labels = c("A", "B", "C", "D"),
           hjust = c(0, 0.25, 0, 0.25))
-ggsave("chi.png", width = width, height = height, units = units)
+ggsave("chi.png", width = width, height = width, units = units)
 
 #### Biochemical Variables ####
 bc_temp <- ggplot(filter(temp_seq, Path == "C4" & Status == "Acclimated" &
@@ -142,17 +157,18 @@ bc_temp <- ggplot(filter(temp_seq, Path == "C4" & Status == "Acclimated" &
                   aes(tg_c, value, group = measure)) + 
   geom_line(size = 2, aes(linetype = measure, color = measure)) +
   scale_linetype_manual(values=c("solid", "dashed", "dotted"), labels = labs[8:10]) +
-  scale_color_manual(values=c("#999999", "#3288BD", "#D53E4F"), labels = labs[8:10]) +
+  scale_color_manual(values=c("#473C8B", "#3288BD", "#D53E4F"), labels = labs[8:10]) +
   labs(y = labs[1], x = labs[2]) + 
   coord_cartesian(ylim = c(0, 2)) +
-  theme(axis.title.x = element_text(size = 18),
-        axis.title.y = element_text(size = 18),
+  theme_bw() +
+  theme(axis.title.y = element_text(size = 14),
+        axis.title.x = element_text(size = 14),
         axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
         legend.position = "bottom",
         legend.title = element_blank(),
-        legend.text = element_text(size = 14),
-        legend.key.size = unit(1.5, "cm"))
+        legend.key.width = unit(5, "line"),
+        legend.text = element_text(size = 14))
 
 bc_light <- ggplot(filter(par_seq, Path == "C4" & Status == "Acclimated" &
                            measure == "jmax_std" | measure == "vpmax_std" |
@@ -160,15 +176,17 @@ bc_light <- ggplot(filter(par_seq, Path == "C4" & Status == "Acclimated" &
                   aes(par, value, group = measure)) + 
   geom_line(size = 2, aes(linetype = measure, color = measure)) +
   scale_linetype_manual(values=c("solid", "dashed", "dotted"), labels = labs[8:10]) +
-  scale_color_manual(values=c("#999999", "#3288BD", "#D53E4F"), labels = labs[8:10]) +
+  scale_color_manual(values=c("#473C8B", "#3288BD", "#D53E4F"), labels = labs[8:10]) +
   labs(y = labs[14], x = labs[3]) + 
   coord_cartesian(ylim = c(0, 2)) +
-  theme(axis.title.x = element_text(size = 18),
-        axis.title.y = element_text(size = 18),
+  theme_bw() +
+  theme(axis.title.y = element_text(size = 14),
+        axis.title.x = element_text(size = 14),
         axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
         legend.position = "bottom",
         legend.title = element_blank(),
+        legend.key.width = unit(5, "line"),
         legend.text = element_text(size = 14))
 
 bc_co2 <- ggplot(filter(co2_seq, Path == "C4" & Status == "Acclimated" &
@@ -177,15 +195,17 @@ bc_co2 <- ggplot(filter(co2_seq, Path == "C4" & Status == "Acclimated" &
                   aes(cao, value, group = measure)) + 
   geom_line(size = 2, aes(linetype = measure, color = measure)) +
   scale_linetype_manual(values=c("solid", "dashed", "dotted"), labels = labs[8:10]) +
-  scale_color_manual(values=c("#999999", "#3288BD", "#D53E4F"), labels = labs[8:10]) +
+  scale_color_manual(values=c("#473C8B", "#3288BD", "#D53E4F"), labels = labs[8:10]) +
   labs(y = labs[1], x = labs[4]) + 
   coord_cartesian(ylim = c(0, 2)) +
-  theme(axis.title.x = element_text(size = 18),
-        axis.title.y = element_text(size = 18),
+  theme_bw() +
+  theme(axis.title.y = element_text(size = 14),
+        axis.title.x = element_text(size = 14),
         axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
         legend.position = "bottom",
         legend.title = element_blank(),
+        legend.key.width = unit(5, "line"),
         legend.text = element_text(size = 14))
 
 bc_vpd <- ggplot(filter(vpd_seq, Path == "C4" & Status == "Acclimated" &
@@ -194,21 +214,23 @@ bc_vpd <- ggplot(filter(vpd_seq, Path == "C4" & Status == "Acclimated" &
                   aes(vpd, value, group = measure)) + 
   geom_line(size = 2, aes(linetype = measure, color = measure)) +
   scale_linetype_manual(values=c("solid", "dashed", "dotted"), labels = labs[8:10]) +
-  scale_color_manual(values=c("#999999", "#3288BD", "#D53E4F"), labels = labs[8:10]) +
+  scale_color_manual(values=c("#473C8B", "#3288BD", "#D53E4F"), labels = labs[8:10]) +
   labs(y = labs[14], x = labs[5]) + 
   coord_cartesian(ylim = c(0, 2)) +
-  theme(axis.title.x = element_text(size = 18),
-        axis.title.y = element_text(size = 18),
+  theme_bw() +
+  theme(axis.title.y = element_text(size = 14),
+        axis.title.x = element_text(size = 14),
         axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
         legend.position = "bottom",
         legend.title = element_blank(),
+        legend.key.width = unit(5, "line"),
         legend.text = element_text(size = 14))
 
 ggarrange(bc_temp, bc_light, bc_co2, bc_vpd, ncol = 2, nrow = 2,
           common.legend = TRUE, legend="bottom", labels = c("A", "B", "C", "D"),
           hjust = c(0, 0.25, 0, 0.25))
-ggsave("biochem.png", width = width, height = height, units = units)
+ggsave("biochem.png", width = width, height = width, units = units)
 
 
 #### Ratios ####
@@ -221,14 +243,15 @@ rat_temp <- ggplot(filter(temp_seq, Path == "C4" & Status == "Acclimated" &
   scale_color_manual(values=c("#E69F00", "#56B4E9", "#009E73"), labels = labs[11:13]) +
   labs(y = labs[1], x = labs[2]) + 
   coord_cartesian(ylim = c(0.25, 3.75)) +
-  theme(axis.title.x = element_text(size = 18),
-        axis.title.y = element_text(size = 18),
+  theme_bw() +
+  theme(axis.title.y = element_text(size = 14),
+        axis.title.x = element_text(size = 14),
         axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
         legend.position = "bottom",
         legend.title = element_blank(),
-        legend.text = element_text(size = 14),
-        legend.key.size = unit(1.5, "cm"))
+        legend.key.width = unit(5, "line"),
+        legend.text = element_text(size = 14))
 
 rat_light <- ggplot(filter(par_seq, Path == "C4" & Status == "Acclimated" &
                             measure == "jvc_ratio_std" | measure == "jvp_ratio_std" |
@@ -239,14 +262,15 @@ rat_light <- ggplot(filter(par_seq, Path == "C4" & Status == "Acclimated" &
   scale_color_manual(values=c("#E69F00", "#56B4E9", "#009E73"), labels = labs[11:13]) +
   labs(y = labs[1], x = labs[3]) + 
   coord_cartesian(ylim = c(0.25, 3.75)) +
-  theme(axis.title.x = element_text(size = 18),
-        axis.title.y = element_text(size = 18),
+  theme_bw() +
+  theme(axis.title.y = element_text(size = 14),
+        axis.title.x = element_text(size = 14),
         axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
         legend.position = "bottom",
         legend.title = element_blank(),
-        legend.text = element_text(size = 14),
-        legend.key.size = unit(1.5, "cm"))
+        legend.key.width = unit(5, "line"),
+        legend.text = element_text(size = 14))
 
 rat_co2 <- ggplot(filter(co2_seq, Path == "C4" & Status == "Acclimated" &
                             measure == "jvc_ratio_std" | measure == "jvp_ratio_std" |
@@ -257,11 +281,15 @@ rat_co2 <- ggplot(filter(co2_seq, Path == "C4" & Status == "Acclimated" &
   scale_color_manual(values=c("#E69F00", "#56B4E9", "#009E73"), labels = labs[11:13]) +
   labs(y = labs[1], x = labs[4]) + 
   coord_cartesian(ylim = c(0.25, 3.75)) +
-  theme(axis.title.x = element_text(size = 18),
-        axis.title.y = element_text(size = 18),
+  theme_bw() +
+  theme(axis.title.y = element_text(size = 14),
+        axis.title.x = element_text(size = 14),
         axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
-        legend.position = "none")
+        legend.position = "bottom",
+        legend.title = element_blank(),
+        legend.key.width = unit(5, "line"),
+        legend.text = element_text(size = 14))
 
 rat_vpd <- ggplot(filter(vpd_seq, Path == "C4" & Status == "Acclimated" &
                             measure == "jvc_ratio_std" | measure == "jvp_ratio_std" |
@@ -272,16 +300,20 @@ rat_vpd <- ggplot(filter(vpd_seq, Path == "C4" & Status == "Acclimated" &
   scale_color_manual(values=c("#E69F00", "#56B4E9", "#009E73"), labels = labs[11:13]) +
   labs(y = labs[1], x = labs[5]) + 
   coord_cartesian(ylim = c(0.25, 3.75)) +
-  theme(axis.title.x = element_text(size = 18),
-        axis.title.y = element_text(size = 18),
+  theme_bw() +
+  theme(axis.title.y = element_text(size = 14),
+        axis.title.x = element_text(size = 14),
         axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
-        legend.position = "none")
+        legend.position = "bottom",
+        legend.title = element_blank(),
+        legend.key.width = unit(5, "line"),
+        legend.text = element_text(size = 14))
 
-ggarrange(rat_temp, rat_light, rat_co2, rat_vpd, ncol = 2, nrow = 2,
-          common.legend = TRUE, legend="bottom", labels = c("A", "B", "C", "D"),
+ggarrange(rat_temp, rat_light, ncol = 2, nrow = 1,
+          common.legend = TRUE, legend="bottom", labels = c("A", "B"),
           hjust = c(0, 0.25, 0, 0.25))
-ggsave("ratios.png", width = width, height = height, units = units)
+ggsave("ratios.png", width = width, height = width/2, units = units)
 
 #### C4 (acclimated and unacclimated) vs C3 (acclimated) A (unscaled) #####
 a_temp <- ggplot(filter(temp_seq, measure == "Ac" | measure == "A" | measure == "An"),
@@ -291,14 +323,15 @@ a_temp <- ggplot(filter(temp_seq, measure == "Ac" | measure == "A" | measure == 
   scale_color_manual(values=c("#CC6666", "#9999CC", "#66CC99"), labels = labs[15:17]) +
   labs(y = labs[18], x = labs[2]) + 
   coord_cartesian(ylim = c(0, 40)) +
-  theme(axis.title.x = element_text(size = 18),
-        axis.title.y = element_text(size = 18),
+  theme_bw() +
+  theme(axis.title.y = element_text(size = 14),
+        axis.title.x = element_text(size = 14),
         axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
         legend.position = "bottom",
         legend.title = element_blank(),
-        legend.text = element_text(size = 14),
-        legend.key.size = unit(1.5, "cm"))
+        legend.key.width = unit(5, "line"),
+        legend.text = element_text(size = 14))
 
 a_light <- ggplot(filter(par_seq, measure == "Ac" | measure == "A" | measure == "An"),
                  aes(par, value, group = measure)) + 
@@ -307,14 +340,15 @@ a_light <- ggplot(filter(par_seq, measure == "Ac" | measure == "A" | measure == 
   scale_color_manual(values=c("#CC6666", "#9999CC", "#66CC99"), labels = labs[15:17]) +
   labs(y = labs[18], x = labs[3]) + 
   coord_cartesian(ylim = c(0, 40)) +
-  theme(axis.title.x = element_text(size = 18),
-        axis.title.y = element_text(size = 18),
+  theme_bw() +
+  theme(axis.title.y = element_text(size = 14),
+        axis.title.x = element_text(size = 14),
         axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
         legend.position = "bottom",
         legend.title = element_blank(),
-        legend.text = element_text(size = 14),
-        legend.key.size = unit(1.5, "cm"))
+        legend.key.width = unit(5, "line"),
+        legend.text = element_text(size = 14))
 
 a_co2 <- ggplot(filter(co2_seq, measure == "Ac" | measure == "A" | measure == "An"),
                   aes(cao, value, group = measure)) + 
@@ -323,14 +357,15 @@ a_co2 <- ggplot(filter(co2_seq, measure == "Ac" | measure == "A" | measure == "A
   scale_color_manual(values=c("#CC6666", "#9999CC", "#66CC99"), labels = labs[15:17]) +
   labs(y = labs[18], x = labs[4]) + 
   coord_cartesian(ylim = c(0, 40)) +
-  theme(axis.title.x = element_text(size = 18),
-        axis.title.y = element_text(size = 18),
+  theme_bw() +
+  theme(axis.title.y = element_text(size = 14),
+        axis.title.x = element_text(size = 14),
         axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
         legend.position = "bottom",
         legend.title = element_blank(),
-        legend.text = element_text(size = 14),
-        legend.key.size = unit(1.5, "cm"))
+        legend.key.width = unit(5, "line"),
+        legend.text = element_text(size = 14))
 
 a_vpd <- ggplot(filter(vpd_seq, measure == "Ac" | measure == "A" | measure == "An"),
                   aes(vpd, value, group = measure)) + 
@@ -339,14 +374,15 @@ a_vpd <- ggplot(filter(vpd_seq, measure == "Ac" | measure == "A" | measure == "A
   scale_color_manual(values=c("#CC6666", "#9999CC", "#66CC99"), labels = labs[15:17]) +
   labs(y = labs[18], x = labs[5]) + 
   coord_cartesian(ylim = c(0, 40)) +
-  theme(axis.title.x = element_text(size = 18),
-        axis.title.y = element_text(size = 18),
+  theme_bw() +
+  theme(axis.title.y = element_text(size = 14),
+        axis.title.x = element_text(size = 14),
         axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
         legend.position = "bottom",
         legend.title = element_blank(),
-        legend.text = element_text(size = 14),
-        legend.key.size = unit(1.5, "cm"))
+        legend.key.width = unit(5, "line"),
+        legend.text = element_text(size = 14))
 
 ggarrange(a_temp, a_light, a_co2, a_vpd, ncol=2, nrow=2,
           common.legend = TRUE, legend="bottom", labels = c("A", "B", "C", "D"),
@@ -440,7 +476,8 @@ plot <- ggplot(grasslands, aes(rasValue, calc_deltaA)) +
   theme(axis.title.x = element_text(size = 18),
         axis.title.y = element_text(size = 18),
         axis.text.x = element_text(size = 14),
-        axis.text.y = element_text(size = 14))
+        axis.text.y = element_text(size = 14)) +
+  theme_bw()
 # Save plot as png
 ggsave("scatterplot.png", width = width, height = height, units = units)
 
@@ -450,7 +487,7 @@ ggsave("scatterplot.png", width = width, height = height, units = units)
 vpd_seq_02 <-C4model(vpdo = c(0:8))
 # Decrease in obs
 (vpd_seq_02$obs[1] - vpd_seq_02$obs[9])/vpd_seq_02$obs[1]
-# Decrease in chi_bs
+# Decrease in chi_bs==
 (vpd_seq_02$chi_bs[1] - vpd_seq_02$chi_bs[9])/vpd_seq_02$chi_bs[1]
 
 # Jmax:Vpmax percent change
@@ -479,3 +516,7 @@ high_co2_c3$A <- high_co2_c3$vcmax * high_co2_c3$mc
 high_delta <- (high_co2$Ac - high_co2_c3$A)/high_co2_c3$A
 
 current_delta[15]
+
+# Call out percent difference between chi_m and chi_bs
+res <- C4model()
+res$chi_bs/res$chi_m * 100
