@@ -36,7 +36,7 @@ Instantaenous_Response <- function(tg_c = 25,
   
   oa_pa <- oao * 1e-6 * patm
   oi <- oa_pa * acclim_chi
-  gamma_star_temp <- calc_gammastar_pa(tg_c, z) # Included an instantaneous response
+  gamma_star_temp <- calc_gammastar_pa_c4(tg_c, z)
   
   m <- (ci - gamma_star_temp) / (ci + 2 * gamma_star_temp)
   omega <- calc_omega(theta = theta, c = 0.01, m = m) # Eq. S4
