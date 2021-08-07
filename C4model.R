@@ -1,6 +1,6 @@
 # C4model: Predicts acclimated 
 # Helen Scott
-# Last Updated: 12/18/2020
+# Last Updated: 07/31/2021
 #
 # Arguments
 ## tg_c: acclimated temperature (degC)
@@ -46,7 +46,6 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   oa <- oao * 1e-6 * patm
   
   # Calculate Gamma star
-  
   gamma_star <- calc_gammastar_pa_c4(tg_c, z) # pa
   
   # calc chi
@@ -74,18 +73,25 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
    
   # calc vpmax
   vpmax <- ((kp + cm)/cm) * (q0 * par * m * omega_star / (8 * theta)) # Eqn. 2.42
-  Ap <- vpmax * (cm / (cm + kp))
+  Apg <- (vpmax * (cm / (cm + kp))) # Gross mesophyll activity (Vp in von caemmerer 2021)
   
   # calc cbs
-  leakage <- leakiness * Al
-  cbs <- calc_cbs(cm, leakage) # Eqn. 2.41
+  gbs <- 0.003 # 3 mmol m^-2 s^-1 * 1000 to convert to micromol
+  cbs <- cm + ((Apg - Al) / gbs)
   chi_bs <- cbs / ca
+  
+  # Calculate leakage
+  leakage <- gbs * (cbs - cm)
+  
   # calc obs
   obs <- oi
   
   # calc vcmax
   vcmax <- (q0 * par * m * omega_star / (8 * theta)) * ((cbs + kr * (1 + obs/ko)) / (cbs - gamma_star)) # Eqn. 2.47
   Ac <- vcmax * ((cbs - gamma_star) / (kr * (1 + obs/ko) + cbs)) # Eqn. 2.4
+  
+  # Calc Ap
+  Ap <- Apg - leakage
   
   results <- data.frame("tg_c" = tg_c,
                         "par" = par,
