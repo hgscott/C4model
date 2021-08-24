@@ -12,30 +12,27 @@ library(tidyr)
 library(reshape)
 
 library(maps)
-library(R.utils) # Need
-library(rgdal)
-library(SDMTools)
+library(rgdal) # Can't install
+library(SDMTools) # Can't install
 library(RColorBrewer)
 library(grDevices)
-library(tiff)
+library(tiff) # Can't install
 
-library(ggpubr)
-library(tiff)
-library(MODISTools)
+library(MODISTools) # Can't install
 
 library(lme4)
 
 
 # Source model code and functions
-setwd("~/GitHub/C4model")
+# setwd("~/GitHub/C4model")
 source("C4model.R")
 sourceDirectory("functions/", modifiedOnly = FALSE)
 source("Instantaneous_Response.R")
 source("prep_long_data.R")
 
 # Source Nick Smith's C3 model
-source('~/GitHub/optimal_vcmax_R/calc_optimal_vcmax.R')
-sourceDirectory('~/GitHub/optimal_vcmax_R/functions', modifiedOnly = FALSE)
+source('../optimal_vcmax_R/calc_optimal_vcmax.R')
+sourceDirectory('../optimal_vcmax_R/functions', modifiedOnly = FALSE)
 
 # Sizes of all images
 width = 10

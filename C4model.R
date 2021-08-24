@@ -10,6 +10,7 @@
 ## oao: atmospheric O2 at sea level (ppm)
 ## paro: photosynthetically active radiation at sea level (?mol m-2 s-1)
 ## theta: curvature of the light response of electron transport (unitless)
+## leakiness: leakage as a fraction of the rate of PEP carboxylationn (unitless)
 ## R: universal gas constant (J mol-1 K-1)
 #
 # Returns
@@ -35,7 +36,7 @@
 ## Ac: Rubisco-limited photosynthesis (?mol m-2 s-1)
 
 C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460, 
-                  paro = 800, theta = 0.85, leakiness = 0.01, 
+                  paro = 800, theta = 0.85, leakiness = 0.2, 
                   R = 8.314){
   
   # environmental terms
@@ -71,17 +72,20 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   # calc ko
   ko <- calc_ko_temp_pa(tg_c, z)
    
+  # Mesophyll activities
+  # calculate leakage
+  leakage <- (leakiness * Al) / (1 - leakiness)
   # calc vpmax
-  vpmax <- ((kp + cm)/cm) * (q0 * par * m * omega_star / (8 * theta)) # Eqn. 2.42
+  vpmax <- ((Al + leakage) * (kp + cm)) /cm
+  # Calculate Ap gross
   Apg <- (vpmax * (cm / (cm + kp))) # Gross mesophyll activity (Vp in von caemmerer 2021)
+  # Calculate Ap
+  Ap <- Apg - leakage
   
   # calc cbs
   gbs <- 0.003 # 3 mmol m^-2 s^-1 * 1000 to convert to micromol
   cbs <- cm + ((Apg - Al) / gbs)
   chi_bs <- cbs / ca
-  
-  # Calculate leakage
-  leakage <- gbs * (cbs - cm)
   
   # calc obs
   obs <- oi
@@ -89,9 +93,6 @@ C4model <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460,
   # calc vcmax
   vcmax <- (q0 * par * m * omega_star / (8 * theta)) * ((cbs + kr * (1 + obs/ko)) / (cbs - gamma_star)) # Eqn. 2.47
   Ac <- vcmax * ((cbs - gamma_star) / (kr * (1 + obs/ko) + cbs)) # Eqn. 2.4
-  
-  # Calc Ap
-  Ap <- Apg - leakage
   
   results <- data.frame("tg_c" = tg_c,
                         "par" = par,

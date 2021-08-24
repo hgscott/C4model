@@ -5,12 +5,14 @@ Instantaenous_Response <- function(tg_c = 25,
                                    oao = 209460, 
                                    paro = 800,
                                    theta = 0.85,
+                                   leakiness = 0.2,
                                    R = 8.314){
   
   # Run the full model at the acclimated conditions
   acclim_res <- C4model()
   
   acclim_chi <- acclim_res$chi_m
+  acclim_chi_bs <- acclim_res$chi_bs
   acclim_jmax <- acclim_res$jmax
   acclim_vpmax <- acclim_res$vpmax
   acclim_vcmax <- acclim_res$vcmax
@@ -31,23 +33,25 @@ Instantaenous_Response <- function(tg_c = 25,
   ca_pa <- cao * 1e-6 * patm
   ci <- ca_pa * acclim_chi
   
-  gbs <- 0.003 # 3 mmol m^-2 s^-1
-  cbs <- (acclim_leak + (gbs * ci)) /gbs
-  
   oa_pa <- oao * 1e-6 * patm
   oi <- oa_pa * acclim_chi
   gamma_star_temp <- calc_gammastar_pa_c4(tg_c, z)
   
   m <- (ci - gamma_star_temp) / (ci + 2 * gamma_star_temp)
-  omega <- calc_omega(theta = theta, c = 0.01, m = m) # Eq. S4
+  omega <- jmax_temp / (q0 * paro)
   omega_star <- (1 + (omega) - sqrt((1 + (omega))^2 - (4 * theta * omega)))
   
-  q0 <- -0.0805 + (0.022 * tg_c) - (0.00034 * tg_c * tg_c)
   Al <- q0 * paro * m * omega_star / (8 * theta) # Eqn. 2.2
   
-  # Al <- calc_Al_jmax(jmax_temp, tg_c, paro, q0, theta)
+  leakage <- (leakiness * Al) / (1 - leakiness)
+  Ap_gross <- (ci * vp_temp)/(kp_temp + ci)
+  Ap <- Ap_gross - acclim_leak
+  
+  gbs <- 0.003 # 3 mmol m^-2 s^-1
+  # cbs <- ci + ((Ap_gross - Al) / gbs) # Something is wrong here
+  cbs <- ca_pa * acclim_chi_bs
+  
   Ac <- vc_temp * ((cbs - gamma_star_temp) / (kr_temp * (1 + oi/ko_temp) + cbs))
-  Ap <- (ci * vp_temp)/(kp_temp + ci)
   
   res <- data.frame(tg_c, z, vpdo, cao, paro, ci, cbs, jmax_temp, kp_temp, kr_temp,
                     vc_temp, vp_temp, Al, Ac, Ap)

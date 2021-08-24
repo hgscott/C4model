@@ -1,5 +1,5 @@
 prep_long_data <- function(tg_c = 25, z = 0, vpdo = 1, cao = 400, oao = 209460, 
-                           paro = 800, theta = 0.85, leakiness = 0.01, 
+                           paro = 800, theta = 0.85, leakiness = 0.2, 
                            R = 8.314){
   # Get standard values for C4 (acclimated to 25)
   std <- C4model()
