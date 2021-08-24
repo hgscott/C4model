@@ -307,8 +307,8 @@ rat_vpd <- ggplot(filter(vpd_seq, Path == "C4" & Status == "Acclimated" &
         legend.key.width = unit(5, "line"),
         legend.text = element_text(size = 14))
 
-ggarrange(rat_temp, rat_light, ncol = 2, nrow = 1,
-          common.legend = TRUE, legend="bottom", labels = c("A", "B"),
+ggarrange(rat_temp, rat_light, rat_co2, rat_vpd, ncol = 2, nrow = 2,
+          common.legend = TRUE, legend="bottom", labels = c("A", "B", "C", "D"),
           hjust = c(0, 0.25, 0, 0.25))
 ggsave("ratios.png", width = width, height = width/2, units = units)
 
@@ -384,16 +384,16 @@ a_vpd <- ggplot(filter(vpd_seq, measure == "Ac" | measure == "A" | measure == "A
 ggarrange(a_temp, a_light, a_co2, a_vpd, ncol=2, nrow=2,
           common.legend = TRUE, legend="bottom", labels = c("A", "B", "C", "D"),
           hjust = c(0, 0.5, 0, 0.5))
-ggsave("A.png", width = width, height = width, units = units) # Mismatch on purpsoe
+ggsave("A.png", width = width, height = height, units = units) # Mismatch on purpsoe
 
 #### Scatter Plot ####
 # Lat/Lon for rasters
-lon_lat_clim <- readMat("C:/Users/hscott/Documents/GitHub/Publication2020/Climate_Data/cru_pre_1901.mat")[[1]][,1:2]
+lon_lat_clim <- readMat("../Publication2020/Climate_Data/cru_pre_1901.mat")[[1]][,1:2]
 colnames(lon_lat_clim) <- c("lon", "lat")
 lon_lat <- as.data.frame(lon_lat_clim)
 
 # Climate data for specified coordinates
-clim_globe <- read.csv("C:/Users/hscott/Documents/GitHub/Publication2020/avg-1960-2015-clim.csv") # Remove this when sharing
+clim_globe <- read.csv("..//Publication2020/avg-1960-2015-clim.csv") # Remove this when sharing
 
 # MODIS Land Cover
 # Make a key
@@ -418,7 +418,7 @@ Land_Cover_Type <- c("Evergreen Needleleaf Forests",
                      "Unclassified")
 key <- data.frame(MODIS_code, Land_Cover_Type)
 # Read in MODIS data
-modis_2001 <- raster('C:/Users/hscott/Documents/GitHub/Publication2020/MODIS-data/LC_hd_global_2001.tif')
+modis_2001 <- raster('../Publication2020/MODIS-data/LC_hd_global_2001.tif')
 # Extract data for the lon/lat from the model
 MODIS_code <- raster::extract(modis_2001, lon_lat)
 clim_cover <- cbind(lon_lat_clim, MODIS_code)
@@ -446,7 +446,7 @@ deltaA_df <- as.data.frame(res_deltaA_plots)
 
 # NASA percent composition data
 # Read in data
-data <- raster('C:/Users/hscott/Documents/GitHub/Publication2020/NASA Percent Data/data/c4_percent_1d.asc') # Remove when sharing
+data <- raster('../Publication2020/NASA Percent Data/data/c4_percent_1d.asc') # Remove when sharing
 # Extract data
 rasValue <- raster::extract(data, lon_lat)
 # Bind it to the lat_lim values
@@ -517,3 +517,4 @@ current_delta[15]
 # Call out percent difference between chi_m and chi_bs
 res <- C4model()
 res$chi_bs/res$chi_m * 100
+
